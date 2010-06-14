@@ -1,1 +1,14 @@
 A little mashup using Sincerial to personalize twitter streams.
+
+TODO:
+[ ] Send tweets to Sincerial for vectorization
+[ ] Send vectorized tweets to Sincerial for Ranking
+ - Status, author, timestamp 
+[ ] Gather interest clicks
+[ ] Send interest clicks to Sincerial
+[ ] Sincerial profile based on interest clicks
+[ ] OAuth
+
+If result is good:
+[ ] Basic Android version
+[ ] UI/UX improved Android version
