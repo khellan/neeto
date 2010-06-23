@@ -7,16 +7,14 @@
 
 package com.sincerial.news.servlets;
 
-import javax.servlet.http.*;
 import java.io.*;
 import java.util.Collections;
 import java.util.List;
+import javax.servlet.http.*;
 
 import com.google.gson.Gson;
 
-import com.sincerial.news.models.RetrievalException;
-import com.sincerial.news.models.NewsItem;
-import com.sincerial.news.models.TweetRetriever;
+import com.sincerial.news.models.*;
 
 /**
  * A servlet that collects your news and presents a view that is personalized for you
@@ -27,21 +25,43 @@ public class Retriever extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
 
-        int retries = MAX_RETRIES;
-        boolean success = false;
-        List<NewsItem> news = Collections.emptyList(); 
+        int twitterRetries = MAX_RETRIES;
+        int sincerialRetries = MAX_RETRIES;
+
+        boolean twitterSuccess = false;
+        boolean sincerialSuccess = false;
+
+        List<NewsItem> twitterNews = Collections.emptyList();
+        List<NewsItem> personalNews = Collections.emptyList();
+
         TweetRetriever retriever = new TweetRetriever();
-        while (!success && retries > 0) {
+        Sincerializer sincerializer = new Sincerializer();
+
+        while (!twitterSuccess && twitterRetries > 0) {
             try {
-                news = retriever.getPublicTimeline();
-                success = true;
+                twitterNews = retriever.getPublicTimeline();
+                twitterSuccess = true;
             } catch (RetrievalException e) {
                 e.printStackTrace();
-                --retries;
+                --twitterRetries;
             }
         }
 
-        String json = new Gson().toJson(news);
+        System.out.println(twitterRetries - MAX_RETRIES + " retries for twitter");
+
+        while (twitterSuccess && !sincerialSuccess && sincerialRetries > 0) {
+            try {
+                personalNews = sincerializer.getRankedNews(twitterNews, "kyosha", "");
+                sincerialSuccess = true;
+            } catch (RetrievalException e) {
+                e.printStackTrace();
+                --sincerialRetries;
+            }
+        }
+
+        System.out.println(sincerialRetries - MAX_RETRIES + " retries for Sincerial");
+        
+        String json = new Gson().toJson(personalNews);
         System.out.println(json);
         out.println(json);
     }
