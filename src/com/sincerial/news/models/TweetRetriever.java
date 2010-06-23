@@ -67,7 +67,7 @@ public class TweetRetriever implements NewsRetriever {
      * @return The {@link NewsItem} with the parsed message
      */
     protected NewsItem parseTweet(Status status) {
-        return new NewsItem(status.getUser().getName(), status.getText());
+        return new NewsItem(Long.toString(status.getId()), status.getUser().getName(), status.getText());
     }
 
     /**
