@@ -23,6 +23,7 @@ public class Retriever extends HttpServlet {
     public static final int MAX_RETRIES = 3;
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("text/html; charset=UTF-8");
         PrintWriter out = response.getWriter();
 
         int twitterRetries = MAX_RETRIES;
