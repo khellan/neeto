@@ -16,31 +16,34 @@ import org.junit.Test;
 public class NewsItemTest {
     Gson gson;
     NewsItem newsItem;
+    String json;
 
     public static final String AUTHOR = "anAuthor";
     public static final String MESSAGE = "is this a message";
+    public static final String ID = "1234567890";
 
     @Before
     public void setUp() {
         gson = new Gson();
-        newsItem = new NewsItem(AUTHOR, MESSAGE);
+        newsItem = new NewsItem(ID, AUTHOR, MESSAGE);
+        json = "{\"document_id\":\"" + ID + "\",\"author\":\"" + AUTHOR +"\",\"message\":\"" +
+                MESSAGE + "\"}";
     }
 
     @Test
     public void create() {
+        Assert.assertEquals(ID, newsItem.getId());
         Assert.assertEquals(AUTHOR, newsItem.getAuthor());
         Assert.assertEquals(MESSAGE, newsItem.getMessage());
     }
 
     @Test
     public void serialize() {
-        String expected = "{\"author\":\"" + AUTHOR +"\",\"message\":\"" + MESSAGE + "\"}";
-        Assert.assertEquals(expected, gson.toJson(newsItem));
+        Assert.assertEquals(json, gson.toJson(newsItem));
     }
 
     @Test
     public void deSerialize() {
-        String json = "{\"author\":\"" + AUTHOR +"\",\"message\":\"" + MESSAGE + "\"}";
         NewsItem deserializedNewsItem = gson.fromJson(json, NewsItem.class);
         Assert.assertEquals(AUTHOR, deserializedNewsItem.getAuthor());
         Assert.assertEquals(MESSAGE, deserializedNewsItem.getMessage());
