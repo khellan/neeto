@@ -33,13 +33,13 @@ public class NewsItemTest {
     }
 
     @Test
-    public void serialization() {
+    public void serialize() {
         String expected = "{\"author\":\"" + AUTHOR +"\",\"message\":\"" + MESSAGE + "\"}";
         Assert.assertEquals(expected, gson.toJson(newsItem));
     }
 
     @Test
-    public void deSerialization() {
+    public void deSerialize() {
         String json = "{\"author\":\"" + AUTHOR +"\",\"message\":\"" + MESSAGE + "\"}";
         NewsItem deserializedNewsItem = gson.fromJson(json, NewsItem.class);
         Assert.assertEquals(AUTHOR, deserializedNewsItem.getAuthor());
