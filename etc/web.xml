@@ -8,8 +8,18 @@
         <servlet-class>com.sincerial.news.servlets.Retriever</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>Liker</servlet-name>
+        <servlet-class>com.sincerial.news.servlets.Liker</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>Retriever</servlet-name>
         <url-pattern>/feed</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>Liker</servlet-name>
+        <url-pattern>/like</url-pattern>
     </servlet-mapping>
 </web-app>
