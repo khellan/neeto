@@ -15,6 +15,11 @@ public class NewsItem {
     String message;
 
     /**
+     * No-args constructor for Gson deserialization
+     */
+    public NewsItem() {}
+    
+    /**
      * Constructs a NewsItem
      *
      * @param author The author of this message or article if known
