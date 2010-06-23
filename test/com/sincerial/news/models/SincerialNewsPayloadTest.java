@@ -24,8 +24,10 @@ public class SincerialNewsPayloadTest {
     public static final String USER_ID = "madTester";
     public static final String PASSWORD = "banana";
     public static final String VENDOR_ID = "V";
+    public static final String ID1 = "123";
     public static final String AUTHOR1 = "anAuthor";
     public static final String MESSAGE1 = "is this a message";
+    public static final String ID2 = "abc";
     public static final String AUTHOR2 = "anotherAuthor";
     public static final String MESSAGE2 = "then this must be a message too";
 
@@ -33,8 +35,8 @@ public class SincerialNewsPayloadTest {
     public void setUp() {
         gson = new Gson();
         newsItems = new ArrayList<NewsItem>();
-        newsItems.add(new NewsItem(AUTHOR1, MESSAGE1));
-        newsItems.add(new NewsItem(AUTHOR2, MESSAGE2));
+        newsItems.add(new NewsItem(ID1, AUTHOR1, MESSAGE1));
+        newsItems.add(new NewsItem(ID2, AUTHOR2, MESSAGE2));
         newsPayload = new Sincerializer.SincerialNewsPayload(USER_ID, PASSWORD, VENDOR_ID, newsItems);
         json = "{\"user_id\":\"" + USER_ID + "\",\"password\":\"" + PASSWORD + "\"," +
                 "\"vendor_id\":\"" + VENDOR_ID + "\",\"news_items\":" + gson.toJson(newsItems) + "}";
@@ -64,6 +66,7 @@ public class SincerialNewsPayloadTest {
         for (int i = 0, l = newsItems.size(); i < l; ++i) {
             Assert.assertEquals(newsItems.get(i).getAuthor(), deserializedNewsItems.get(i).getAuthor());
             Assert.assertEquals(newsItems.get(i).getMessage(), deserializedNewsItems.get(i).getMessage());
+            Assert.assertEquals(newsItems.get(i).getId(), deserializedNewsItems.get(i).getId());
         }
     }
 }

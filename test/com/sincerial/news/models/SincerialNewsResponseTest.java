@@ -21,8 +21,10 @@ public class SincerialNewsResponseTest {
     Sincerializer.SincerialNewsResponse newsResponse;
     String json;
 
+    public static final String ID1 = "123";
     public static final String AUTHOR1 = "anAuthor";
     public static final String MESSAGE1 = "is this a message";
+    public static final String ID2 = "abc";
     public static final String AUTHOR2 = "anotherAuthor";
     public static final String MESSAGE2 = "then this must be a message too";
     public static final int HITS_REQUESTED = 26;
@@ -32,8 +34,8 @@ public class SincerialNewsResponseTest {
     public void setUp() {
         gson = new Gson();
         newsItems = new ArrayList<NewsItem>();
-        newsItems.add(new NewsItem(AUTHOR1, MESSAGE1));
-        newsItems.add(new NewsItem(AUTHOR2, MESSAGE2));
+        newsItems.add(new NewsItem(ID1, AUTHOR1, MESSAGE1));
+        newsItems.add(new NewsItem(ID2, AUTHOR2, MESSAGE2));
         newsResponse = new Sincerializer.SincerialNewsResponse(HITS_REQUESTED, TOTAL_HITS, newsItems);
         json = "{\"hits_requested\":" + HITS_REQUESTED + ",\"total_hits\":" + TOTAL_HITS + "," +
                 "\"results\":" + gson.toJson(newsItems) + "}";
@@ -62,6 +64,7 @@ public class SincerialNewsResponseTest {
         for (int i = 0, l = newsItems.size(); i < l; ++i) {
             Assert.assertEquals(newsItems.get(i).getAuthor(), deserializedNewsItems.get(i).getAuthor());
             Assert.assertEquals(newsItems.get(i).getMessage(), deserializedNewsItems.get(i).getMessage());
+            Assert.assertEquals(newsItems.get(i).getId(), deserializedNewsItems.get(i).getId());
         }
     }
 }
