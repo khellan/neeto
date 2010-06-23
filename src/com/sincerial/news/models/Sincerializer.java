@@ -28,7 +28,8 @@ import com.google.gson.annotations.SerializedName;
 public class Sincerializer {
 
     public static final String URL = "http://localhost:3000/";
-    public static final String PATH = "rank/news";
+    public static final String NEWS_RANK_PATH = "rank/news";
+    public static final String LIKE_PATH = "report_purchase";
     public static final String VENDOR_ID = "301";
     public static final int CONNECTION_TIMEOUT = 5000;
     public static final String ENCODING = "UTF-8";
@@ -74,7 +75,7 @@ public class Sincerializer {
 
     public List<NewsItem> getRankedNews(List<NewsItem> newsItems, String userId, String password)
             throws RetrievalException, IOException {
-        String url = URL + PATH;
+        String url = URL + NEWS_RANK_PATH;
         Gson gson = new Gson();
         SincerialNewsPayload payload = new SincerialNewsPayload(userId, password, VENDOR_ID, newsItems);
 
@@ -115,5 +116,32 @@ public class Sincerializer {
         } catch (MalformedURLException e) {
             throw new RetrievalException("URL didn't turn out right: " + url, e.getCause());
         }
+    }
+
+    public boolean setLikedNews(String documentId, boolean like) throws IOException {
+        // /:vendor_id/:user_id/:product_ids
+        String url = URL + LIKE_PATH + "/" + VENDOR_ID + "/" + "kyosha" + "/" + documentId;
+
+        System.out.println("Opening connection to " + url);
+
+        URL requestURL = new URL(url);
+        URLConnection connection = requestURL.openConnection();
+
+        System.out.println("Setting timeouts");
+
+        connection.setConnectTimeout(CONNECTION_TIMEOUT);
+        connection.setReadTimeout(CONNECTION_TIMEOUT);
+        connection.setDoInput(true);
+        connection.setDoOutput(false);
+
+        System.out.println("Connection open");
+
+        System.out.println("Reading stuff");
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String response = reader.readLine();
+        System.out.println("Read <<<" + response + ">>>");
+
+        return response == "OK";
     }
 }
