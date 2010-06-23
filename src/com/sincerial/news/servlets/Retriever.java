@@ -48,7 +48,7 @@ public class Retriever extends HttpServlet {
             }
         }
 
-        System.out.println(twitterRetries - MAX_RETRIES + " retries for twitter");
+        System.out.println(MAX_RETRIES - twitterRetries + " retries for twitter");
 
         while (twitterSuccess && !sincerialSuccess && sincerialRetries > 0) {
             try {
@@ -60,7 +60,7 @@ public class Retriever extends HttpServlet {
             }
         }
 
-        System.out.println(sincerialRetries - MAX_RETRIES + " retries for Sincerial");
+        System.out.println(MAX_RETRIES - sincerialRetries + " retries for Sincerial");
         
         String json = new Gson().toJson(personalNews);
         System.out.println(json);
