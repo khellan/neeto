@@ -3,13 +3,16 @@ A little mashup using Sincerial to personalize twitter streams.
 TODO:
 [X] Create sinatra application for vectorization and ranking
 [X] Refactor rankers to handle prefetched items
-[ ] Send tweets to Sincerial for vectorization and ranking
+[X] Send tweets to Sincerial for vectorization and ranking
  - Status, author, timestamp 
-[ ] Gather interest clicks
-[ ] Send interest clicks to Sincerial
-[ ] Sincerial profile based on interest clicks
-[ ] OAuth
+[X] Gather interest clicks
+[X] Send interest clicks to Sincerial
+[X] Sincerial profile based on interest clicks
 
 If result is good:
+[ ] User creation (Sincerial)
+[ ] OAuth with Twitter
+[ ] User creation (Sincerial) with twitter-derived userid
 [ ] Basic Android version
 [ ] UI/UX improved Android version
+[ ] Servlet functionality to profilemanager (in Ruby)

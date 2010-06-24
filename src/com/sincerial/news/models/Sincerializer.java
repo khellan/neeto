@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -29,7 +30,7 @@ public class Sincerializer {
 
     public static final String URL = "http://localhost:3000/";
     public static final String NEWS_RANK_PATH = "rank/news";
-    public static final String LIKE_PATH = "report_purchase";
+    public static final String LIKE_PATH = "report_interest";
     public static final String VENDOR_ID = "301";
     public static final int CONNECTION_TIMEOUT = 5000;
     public static final String ENCODING = "UTF-8";
@@ -79,69 +80,57 @@ public class Sincerializer {
         Gson gson = new Gson();
         SincerialNewsPayload payload = new SincerialNewsPayload(userId, password, VENDOR_ID, newsItems);
 
-        System.out.println("Opening connection to " + url);
-
         try {
             URL requestURL = new URL(url);
-            System.out.println("going");
             URLConnection connection = requestURL.openConnection();
-
-            System.out.println("Setting timeouts");
 
             connection.setConnectTimeout(CONNECTION_TIMEOUT);
             connection.setReadTimeout(CONNECTION_TIMEOUT);
             connection.setDoInput(true);
             connection.setDoOutput(true);
             
-            System.out.println("Connection open");
-
             OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-
-            System.out.println("Sending stuff");
 
             writer.write("payload=" + URLEncoder.encode(gson.toJson(payload), ENCODING));
             writer.flush();
 
-            System.out.println("Reading stuff");
-            
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String json = reader.readLine();
             System.out.println("Read <<<" + json + ">>>");
             //SincerialNewsResponse response = gson.fromJson(reader, SincerialNewsResponse.class);
             SincerialNewsResponse response = gson.fromJson(json, SincerialNewsResponse.class);
 
-            System.out.println("Stuff read");
-            
             return response.results;
         } catch (MalformedURLException e) {
             throw new RetrievalException("URL didn't turn out right: " + url, e.getCause());
         }
     }
 
-    public boolean setLikedNews(String documentId, boolean like) throws IOException {
-        // /:vendor_id/:user_id/:product_ids
-        String url = URL + LIKE_PATH + "/" + VENDOR_ID + "/" + "kyosha" + "/" + documentId;
-
-        System.out.println("Opening connection to " + url);
+    public boolean setLikedNews(NewsItem newsItem, String userId, String password, boolean like) throws IOException {
+        String url = URL + LIKE_PATH + "/" + VENDOR_ID + "/" + userId;
+        Gson gson = new Gson();
+        List<NewsItem> newsItems = new ArrayList<NewsItem>();
+        newsItems.add(newsItem);
+        SincerialNewsPayload payload = new SincerialNewsPayload(userId, password, VENDOR_ID, newsItems);
 
         URL requestURL = new URL(url);
         URLConnection connection = requestURL.openConnection();
 
-        System.out.println("Setting timeouts");
-
         connection.setConnectTimeout(CONNECTION_TIMEOUT);
         connection.setReadTimeout(CONNECTION_TIMEOUT);
         connection.setDoInput(true);
-        connection.setDoOutput(false);
+        connection.setDoOutput(true);
 
-        System.out.println("Connection open");
+        OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
 
-        System.out.println("Reading stuff");
+        writer.write("payload=" + URLEncoder.encode(gson.toJson(payload), ENCODING));
+        writer.flush();
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         String response = reader.readLine();
+
         System.out.println("Read <<<" + response + ">>>");
 
-        return response == "OK";
+        return response.equals("OK");
     }
 }

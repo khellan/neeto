@@ -21,18 +21,20 @@ public class NewsItemTest {
     public static final String AUTHOR = "anAuthor";
     public static final String MESSAGE = "is this a message";
     public static final String ID = "1234567890";
+    public static final String CATEGORY = "news";
 
     @Before
     public void setUp() {
         gson = new Gson();
-        newsItem = new NewsItem(ID, AUTHOR, MESSAGE);
-        json = "{\"document_id\":\"" + ID + "\",\"author\":\"" + AUTHOR +"\",\"message\":\"" +
-                MESSAGE + "\"}";
+        newsItem = new NewsItem(ID, CATEGORY, AUTHOR, MESSAGE);
+        json = "{\"product_id\":\"" + ID + "\",\"category\":\"" + CATEGORY + "\"," +
+                "\"author\":\"" + AUTHOR +"\",\"message\":\"" + MESSAGE + "\"}";
     }
 
     @Test
     public void create() {
         Assert.assertEquals(ID, newsItem.getId());
+        Assert.assertEquals(CATEGORY, newsItem.getCategory());
         Assert.assertEquals(AUTHOR, newsItem.getAuthor());
         Assert.assertEquals(MESSAGE, newsItem.getMessage());
     }
@@ -45,6 +47,8 @@ public class NewsItemTest {
     @Test
     public void deSerialize() {
         NewsItem deserializedNewsItem = gson.fromJson(json, NewsItem.class);
+        Assert.assertEquals(ID, deserializedNewsItem.getId());
+        Assert.assertEquals(CATEGORY, deserializedNewsItem.getCategory());
         Assert.assertEquals(AUTHOR, deserializedNewsItem.getAuthor());
         Assert.assertEquals(MESSAGE, deserializedNewsItem.getMessage());
     }

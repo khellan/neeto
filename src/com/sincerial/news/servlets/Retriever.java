@@ -21,7 +21,10 @@ import com.sincerial.news.models.*;
  */
 public class Retriever extends HttpServlet {
     public static final int MAX_RETRIES = 3;
-
+    public static final String VENDOR_ID = "vendor_id";
+    public static final String USER_ID = "user_id";
+    public static final String PASSWORD = "password";
+    
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html; charset=UTF-8");
         PrintWriter out = response.getWriter();
@@ -35,12 +38,16 @@ public class Retriever extends HttpServlet {
         List<NewsItem> twitterNews = Collections.emptyList();
         List<NewsItem> personalNews = Collections.emptyList();
 
+        String vendorId = request.getParameter(VENDOR_ID);
+        String userId = request.getParameter(USER_ID);
+        String password = request.getParameter(PASSWORD);
+
         TweetRetriever retriever = new TweetRetriever();
         Sincerializer sincerializer = new Sincerializer();
 
         while (!twitterSuccess && twitterRetries > 0) {
             try {
-                twitterNews = retriever.getPublicTimeline();
+                twitterNews = retriever.getUserTimeline(userId, password);
                 twitterSuccess = true;
             } catch (RetrievalException e) {
                 e.printStackTrace();
@@ -48,11 +55,12 @@ public class Retriever extends HttpServlet {
             }
         }
 
-        System.out.println(MAX_RETRIES - twitterRetries + " retries for twitter");
+        System.out.println(MAX_RETRIES - twitterRetries + " retries for twitter, " + twitterNews.size() + " tweets");
+        System.out.println(new Gson().toJson(twitterNews));
 
         while (twitterSuccess && !sincerialSuccess && sincerialRetries > 0) {
             try {
-                personalNews = sincerializer.getRankedNews(twitterNews, "kyosha", "");
+                personalNews = sincerializer.getRankedNews(twitterNews, vendorId + "_" + userId, "");
                 sincerialSuccess = true;
             } catch (RetrievalException e) {
                 e.printStackTrace();

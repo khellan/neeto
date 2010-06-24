@@ -13,7 +13,8 @@ import com.google.gson.annotations.SerializedName;
  * General class to store news items to avoid cluttering code with source specific stuff
  */
 public class NewsItem {
-    @SerializedName("document_id") String id;
+    @SerializedName("product_id") String id;
+    String category;
     String author;
     String message;
 
@@ -29,8 +30,9 @@ public class NewsItem {
      * @param author The author of this message or article if known
      * @param message The actual message or article
      */
-    public NewsItem(String id, String author, String message) {
+    public NewsItem(String id, String category, String author, String message) {
         this.id = id;
+        this.category = category;
         this.author = author;
         this.message = message;
     }
@@ -39,6 +41,11 @@ public class NewsItem {
      * @return A {@link String} with the id
      */
     public String getId() {return id;}
+
+    /**
+     * @return A {@link String} with the id
+     */
+    public String getCategory() {return category;}
 
     /**
      * @return A {@link String} with the author

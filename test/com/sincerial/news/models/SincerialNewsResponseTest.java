@@ -22,9 +22,11 @@ public class SincerialNewsResponseTest {
     String json;
 
     public static final String ID1 = "123";
+    public static final String CATEGORY1 = "bullshit";
     public static final String AUTHOR1 = "anAuthor";
     public static final String MESSAGE1 = "is this a message";
     public static final String ID2 = "abc";
+    public static final String CATEGORY2 = "bullcrap";
     public static final String AUTHOR2 = "anotherAuthor";
     public static final String MESSAGE2 = "then this must be a message too";
     public static final int HITS_REQUESTED = 26;
@@ -34,8 +36,8 @@ public class SincerialNewsResponseTest {
     public void setUp() {
         gson = new Gson();
         newsItems = new ArrayList<NewsItem>();
-        newsItems.add(new NewsItem(ID1, AUTHOR1, MESSAGE1));
-        newsItems.add(new NewsItem(ID2, AUTHOR2, MESSAGE2));
+        newsItems.add(new NewsItem(ID1, CATEGORY1, AUTHOR1, MESSAGE1));
+        newsItems.add(new NewsItem(ID2, CATEGORY2, AUTHOR2, MESSAGE2));
         newsResponse = new Sincerializer.SincerialNewsResponse(HITS_REQUESTED, TOTAL_HITS, newsItems);
         json = "{\"hits_requested\":" + HITS_REQUESTED + ",\"total_hits\":" + TOTAL_HITS + "," +
                 "\"results\":" + gson.toJson(newsItems) + "}";

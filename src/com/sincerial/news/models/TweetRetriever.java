@@ -19,6 +19,8 @@ import twitter4j.TwitterException;
  *  Handles communication with the Twitter
  */
 public class TweetRetriever implements NewsRetriever {
+    public static final String CATEGORY = "news";
+    
     /**
      * Interface for a faimily of timeline getters. Basically a poor-mans functional programming approach
      */
@@ -67,7 +69,7 @@ public class TweetRetriever implements NewsRetriever {
      * @return The {@link NewsItem} with the parsed message
      */
     protected NewsItem parseTweet(Status status) {
-        return new NewsItem(Long.toString(status.getId()), status.getUser().getName(), status.getText());
+        return new NewsItem(Long.toString(status.getId()), CATEGORY, status.getUser().getName(), status.getText());
     }
 
     /**
@@ -94,7 +96,7 @@ public class TweetRetriever implements NewsRetriever {
         return getTimeline(new PublicTimelineGetter(new TwitterFactory().getInstance()));
     }
 
-    public List<NewsItem> getUserTimeline(String user, String password) throws RetrievalException {
-        return getTimeline(new FriendsTimelineGetter(new TwitterFactory().getInstance(user, password)));
+    public List<NewsItem> getUserTimeline(String userId, String password) throws RetrievalException {
+        return getTimeline(new FriendsTimelineGetter(new TwitterFactory().getInstance(userId, password)));
     }
 }
