@@ -26,7 +26,7 @@ public class Retriever extends HttpServlet {
     public static final String VENDOR_ID = "vendor_id";
     public static final String USER_ID = "user_id";
     public static final String PASSWORD = "password";
-    
+
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html; charset=UTF-8");
         PrintWriter out = response.getWriter();
@@ -43,12 +43,15 @@ public class Retriever extends HttpServlet {
         String userId = request.getParameter(USER_ID);
         String password = request.getParameter(PASSWORD);
 
-        TweetRetriever retriever = new TweetRetriever();
-        Sincerializer sincerializer = new Sincerializer();
         Logger logger = Logger.getLogger(Retriever.class.getPackage().getName());
+        TweetRetriever retriever = new TweetRetriever();
         while (!twitterSuccess && twitterRetries > 0) {
             try {
-                twitterNews = retriever.getUserTimeline(userId, password);
+                if ("".equals(userId)) {
+                    twitterNews = retriever.getPublicTimeline();
+                } else {
+                    twitterNews = retriever.getUserTimeline(userId, password);
+                }
                 twitterSuccess = true;
             } catch (RetrievalException e) {
                 logger.info("Barfing");
@@ -59,9 +62,10 @@ public class Retriever extends HttpServlet {
 
         logger.info(MAX_RETRIES - twitterRetries + " retries for twitter, " + twitterNews.size() + " tweets");
         logger.fine(new Gson().toJson(twitterNews));
+        Sincerializer sincerializer = new Sincerializer();
 
         List<NewsItem> personalNews = twitterNews;
-        while (twitterSuccess && !sincerialSuccess && sincerialRetries > 0) {
+        while (twitterSuccess && !sincerialSuccess && sincerialRetries > 0 && !"".equals(userId)) {
             try {
                 personalNews = sincerializer.getRankedNews(twitterNews, vendorId + "_" + userId, "");
                 sincerialSuccess = true;
