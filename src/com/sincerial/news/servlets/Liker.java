@@ -14,10 +14,10 @@ import java.io.PrintWriter;
  * User: khellan
  * Date: Jun 23, 2010
  * Time: 3:26:35 PM
- * To change this template use File | Settings | File Templates.
+ * Servlet responsible for handling like an unlike requests
  */
 public class Liker extends HttpServlet {
-    public static final String DOCUMENT_ID = "document_id";
+    public static final String PRODUCT_ID = "product_id";
     public static final String CATEGORY = "category";
     public static final String MESSAGE = "message";
     public static final String AUTHOR = "author";
@@ -29,7 +29,7 @@ public class Liker extends HttpServlet {
         response.setContentType("text/html; charset=UTF-8");
         PrintWriter out = response.getWriter();
 
-        String documentId = request.getParameter(DOCUMENT_ID);
+        String productId = request.getParameter(PRODUCT_ID);
         String category = request.getParameter(CATEGORY);
         String message = request.getParameter(MESSAGE);
         String author = request.getParameter(AUTHOR);
@@ -37,12 +37,13 @@ public class Liker extends HttpServlet {
         String vendorId = request.getParameter(VENDOR_ID);
         String userId = request.getParameter(USER_ID);
 
-        NewsItem newsItem = new NewsItem(documentId, category, author, message);
+        NewsItem newsItem = new NewsItem(productId, category, author, message);
         Sincerializer sincerializer = new Sincerializer();
 
         String sincerialUserId = vendorId + "_" + userId;
+        System.out.println("What's to like?");
         boolean result = sincerializer.setLikedNews(newsItem, sincerialUserId, "", like);
-        System.out.println("Id: " + documentId + " is liked? " + like + " and stored? " + result + " for " + sincerialUserId);
+        System.out.println("Id: " + productId + " is liked? " + like + " and stored? " + result + " for " + sincerialUserId);
 
         out.println("{\"like\":" + like + "}");        
     }
