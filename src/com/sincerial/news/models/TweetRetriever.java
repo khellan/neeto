@@ -86,7 +86,7 @@ public class TweetRetriever implements NewsRetriever {
                 messages.add(parseTweet(status));
             }
         } catch(TwitterException e) {
-            throw new RetrievalException("Tweet retrieval failed", e.getCause());
+            throw new RetrievalException("Tweet retrieval failed", e);
         }
 
         return messages;

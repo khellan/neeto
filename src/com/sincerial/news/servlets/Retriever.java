@@ -10,6 +10,8 @@ package com.sincerial.news.servlets;
 import java.io.*;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.*;
 
 import com.google.gson.Gson;
@@ -36,7 +38,6 @@ public class Retriever extends HttpServlet {
         boolean sincerialSuccess = false;
 
         List<NewsItem> twitterNews = Collections.emptyList();
-        List<NewsItem> personalNews = Collections.emptyList();
 
         String vendorId = request.getParameter(VENDOR_ID);
         String userId = request.getParameter(USER_ID);
@@ -44,34 +45,39 @@ public class Retriever extends HttpServlet {
 
         TweetRetriever retriever = new TweetRetriever();
         Sincerializer sincerializer = new Sincerializer();
-
+        Logger logger = Logger.getLogger(Retriever.class.getPackage().getName());
         while (!twitterSuccess && twitterRetries > 0) {
             try {
                 twitterNews = retriever.getUserTimeline(userId, password);
                 twitterSuccess = true;
             } catch (RetrievalException e) {
-                e.printStackTrace();
+                logger.info("Barfing");
+                logger.log(Level.WARNING, "RetrievalException from Twitter", e);
                 --twitterRetries;
             }
         }
 
-        System.out.println(MAX_RETRIES - twitterRetries + " retries for twitter, " + twitterNews.size() + " tweets");
-        System.out.println(new Gson().toJson(twitterNews));
+        logger.info(MAX_RETRIES - twitterRetries + " retries for twitter, " + twitterNews.size() + " tweets");
+        logger.fine(new Gson().toJson(twitterNews));
 
+        List<NewsItem> personalNews = twitterNews;
         while (twitterSuccess && !sincerialSuccess && sincerialRetries > 0) {
             try {
                 personalNews = sincerializer.getRankedNews(twitterNews, vendorId + "_" + userId, "");
                 sincerialSuccess = true;
             } catch (RetrievalException e) {
-                e.printStackTrace();
+                logger.log(Level.WARNING, "RetrievalException from Sincerial", e);
+                --sincerialRetries;
+            } catch (IOException e) {
+                logger.severe("IO Error talking to Sincerial");
                 --sincerialRetries;
             }
         }
 
-        System.out.println(MAX_RETRIES - sincerialRetries + " retries for Sincerial");
+        logger.info(MAX_RETRIES - sincerialRetries + " retries for Sincerial");
         
         String json = new Gson().toJson(personalNews);
-        System.out.println(json);
+        logger.fine(json);
         out.println(json);
     }
 }
