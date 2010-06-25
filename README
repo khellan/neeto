@@ -8,8 +8,9 @@ TODO:
 [X] Gather interest clicks
 [X] Send interest clicks to Sincerial
 [X] Sincerial profile based on interest clicks
-[ ] Author as a tagged element in product vector
-[ ] Public timeline if not logged in
+[X] Author in product vector
+[X] Public timeline if not logged in
+[ ] Links will be links
 [ ] Menubar with "sign in" if not logged in and "sign out" if logged in
 [ ] User servlet handling "sign in" and "sign out" with cookie
 
