@@ -14,9 +14,14 @@ com.sincerial.news.CATEGORY = 'news';
 
 $(document).ready(
     function(event) {
+        com.sincerial.news.login();
         com.sincerial.news.request_feed();
     }
 )
+
+com.sincerial.news.login = function() {
+    $("#sign_in").html('Sign out');
+}
 
 com.sincerial.news.request_feed = function() {
     $.getJSON(
@@ -32,14 +37,46 @@ com.sincerial.news.request_feed = function() {
     );
 }
 
+com.sincerial.news.format_field = function(message, matches, hyperlinks) {
+    var result = message;
+    for (i in matches) {
+        var field = matches[i];
+        if (field in hyperlinks) {
+            result = result.replace(field, '<a href="' + hyperlinks[field] + '">' + field + "</a>");
+        }
+    }
+    return result;
+}
+com.sincerial.news.format_mentions = function(message, hyperlinks) {
+    return com.sincerial.news.format_field(message, message.match(/@[\w]{1,20}/g), hyperlinks);
+}
+
+com.sincerial.news.format_hashtags = function(message, hyperlinks) {
+    return com.sincerial.news.format_field(message, message.match(/#[\w\xc0-\xd6\xd8-\xf6\xf8-\xff0-9_]+/g), hyperlinks);
+}
+
+com.sincerial.news.format_urls = function(message, hyperlinks) {
+    return com.sincerial.news.format_field(message, message.match(/(https?:\/\/|www\.)[\S]+/g), hyperlinks);
+}
+
+com.sincerial.news.format_message = function(message, hyperlinks) {
+    var result = message;
+    result = com.sincerial.news.format_mentions(result, hyperlinks);
+    result = com.sincerial.news.format_hashtags(result, hyperlinks);
+    result = com.sincerial.news.format_urls(result, hyperlinks);
+    return result;
+}
+
 com.sincerial.news.show_feed = function(items) {
     var html = "";
     for (var i in items) {
         var item = items[i];
         html += "<li>";
+        html += "<img src='images/twitter_t.png'>";
         html += "<button id='" + item.product_id + "' type='button'>Like</button>"
         html += "<div class='author' id='author_" + item.product_id + "'>" + item.author + "</div>";
-        html += "<div class='message' id='message_" + item.product_id + "'>" + item.message + "</div>";
+        html += "<div class='message' id='message_" + item.product_id + "'>" +
+            com.sincerial.news.format_message(item.message, item.hyperlinks) + "</div>";
         html += "</li>";
     }
     $("#feed_items").html(html);
