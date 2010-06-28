@@ -10,8 +10,8 @@ TODO:
 [X] Sincerial profile based on interest clicks
 [X] Author in product vector
 [X] Public timeline if not logged in
-[ ] Links will be links
-[ ] Menubar with "sign in" if not logged in and "sign out" if logged in
+[X] Links will be links
+[X] Menubar with "sign in" if not logged in and "sign out" if logged in
 [ ] User servlet handling "sign in" and "sign out" with cookie
 
 If result is good:
