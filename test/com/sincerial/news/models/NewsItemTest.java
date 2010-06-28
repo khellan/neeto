@@ -13,22 +13,33 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
 public class NewsItemTest {
     Gson gson;
     NewsItem newsItem;
+    Map<String, URL> hyperlinks;
     String json;
 
     public static final String AUTHOR = "anAuthor";
     public static final String MESSAGE = "is this a message";
+    public static final String ANCHOR_TEXT = "this";
+    public static final String HYPERLINK = "http://test.com/";
     public static final String ID = "1234567890";
     public static final String CATEGORY = "news";
 
     @Before
-    public void setUp() {
+    public void setUp() throws MalformedURLException {
         gson = new Gson();
-        newsItem = new NewsItem(ID, CATEGORY, AUTHOR, MESSAGE);
+        hyperlinks = new HashMap<String, URL>();
+        hyperlinks.put(ANCHOR_TEXT, new URL(HYPERLINK));
+        newsItem = new NewsItem(ID, CATEGORY, AUTHOR, MESSAGE, hyperlinks);
         json = "{\"product_id\":\"" + ID + "\",\"category\":\"" + CATEGORY + "\"," +
-                "\"author\":\"" + AUTHOR +"\",\"message\":\"" + MESSAGE + "\"}";
+                "\"author\":\"" + AUTHOR +"\",\"message\":\"" + MESSAGE + "\"," +
+                "\"hyperlinks\":{\"" + ANCHOR_TEXT + "\":\"" + HYPERLINK + "\"}}";
     }
 
     @Test
@@ -37,6 +48,7 @@ public class NewsItemTest {
         Assert.assertEquals(CATEGORY, newsItem.getCategory());
         Assert.assertEquals(AUTHOR, newsItem.getAuthor());
         Assert.assertEquals(MESSAGE, newsItem.getMessage());
+        Assert.assertEquals(hyperlinks, newsItem.getHyperlinks());
     }
 
     @Test
@@ -51,5 +63,6 @@ public class NewsItemTest {
         Assert.assertEquals(CATEGORY, deserializedNewsItem.getCategory());
         Assert.assertEquals(AUTHOR, deserializedNewsItem.getAuthor());
         Assert.assertEquals(MESSAGE, deserializedNewsItem.getMessage());
+        Assert.assertEquals(hyperlinks, deserializedNewsItem.getHyperlinks());
     }
 }
