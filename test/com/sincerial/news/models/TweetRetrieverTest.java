@@ -27,14 +27,14 @@ public class TweetRetrieverTest {
     @Test
     public void testExtractHyperlinks() throws MalformedURLException {
         String message = "@balle:man http://bit.ly/87asdf rocks. RT @c3po #fail and@foo_bar_#rofl";
-        Map<String, URL> expectedHyperlinks = new HashMap<String, URL>();
-        expectedHyperlinks.put("@balle", new URL(TWITTER_BASE + "balle"));
-        expectedHyperlinks.put("http://bit.ly/87asdf", new URL("http://bit.ly/87asdf"));
-        expectedHyperlinks.put("@c3po", new URL(TWITTER_BASE + "c3po"));
-        expectedHyperlinks.put("@foo_bar_", new URL(TWITTER_BASE + "foo_bar_"));
-        expectedHyperlinks.put("#fail", new URL(TWITTER_HASH_SEARCH + "fail"));
-        expectedHyperlinks.put("#rofl", new URL(TWITTER_HASH_SEARCH + "rofl"));
-        Map<String, URL> actualHyperlinks = TweetRetriever.extractHyperlinks(message);
+        Map<String, String> expectedHyperlinks = new HashMap<String, String>();
+        expectedHyperlinks.put("@balle", TWITTER_BASE + "balle");
+        expectedHyperlinks.put("http://bit.ly/87asdf", "http://bit.ly/87asdf");
+        expectedHyperlinks.put("@c3po", TWITTER_BASE + "c3po");
+        expectedHyperlinks.put("@foo_bar_", TWITTER_BASE + "foo_bar_");
+        expectedHyperlinks.put("#fail", TWITTER_HASH_SEARCH + "fail");
+        expectedHyperlinks.put("#rofl", TWITTER_HASH_SEARCH + "rofl");
+        Map<String, String> actualHyperlinks = TweetRetriever.extractHyperlinks(message);
         Assert.assertEquals(expectedHyperlinks, actualHyperlinks);
     }
 }

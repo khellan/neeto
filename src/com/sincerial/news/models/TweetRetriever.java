@@ -73,59 +73,47 @@ public class TweetRetriever implements NewsRetriever {
         }
     }
 
-    protected static Map<String, URL> extractMentions(String message, Map<String, URL> hyperlinks) {
+    protected static Map<String, String> extractMentions(String message, Map<String, String> hyperlinks) {
         Logger logger = Logger.getLogger(TweetRetriever.class.getPackage().getName());
         Pattern extractMentions = Pattern.compile("@[\\w]{1,20}");
 
         Matcher mentions = extractMentions.matcher(message);
         while (mentions.find()) {
             String mention = mentions.group();
-            try {
-                hyperlinks.put(mention, new URL(TWITTER_BASE + mention.substring(1)));
-            } catch (MalformedURLException e) {
-                logger.log(Level.WARNING, "MalformedURLException: " + mention, e);
-            }
+            hyperlinks.put(mention, TWITTER_BASE + mention.substring(1));
         }
 
         return hyperlinks;
     }
 
-    protected static Map<String, URL> extractHashtags(String message, Map<String, URL> hyperlinks) {
+    protected static Map<String, String> extractHashtags(String message, Map<String, String> hyperlinks) {
         Logger logger = Logger.getLogger(TweetRetriever.class.getPackage().getName());
         Pattern extractHashtags = Pattern.compile("#[\\w\\xc0-\\xd6\\xd8-\\xf6\\xf8-\\xff0-9_]+");
 
         Matcher hashtags = extractHashtags.matcher(message);
         while (hashtags.find()) {
             String hashtag = hashtags.group();
-            try {
-                hyperlinks.put(hashtag, new URL(TWITTER_HASH_SEARCH + hashtag.substring(1)));
-            } catch (MalformedURLException e) {
-                logger.log(Level.WARNING, "MalformedURLException: " + hashtag, e);
-            }
+            hyperlinks.put(hashtag, TWITTER_HASH_SEARCH + hashtag.substring(1));
         }
 
         return hyperlinks;
     }
 
-    protected static Map<String, URL> extractURLs(String message, Map<String, URL> hyperlinks) {
+    protected static Map<String, String> extractURLs(String message, Map<String, String> hyperlinks) {
         Logger logger = Logger.getLogger(TweetRetriever.class.getPackage().getName());
         Pattern extractURLs = Pattern.compile("(https?:\\/\\/|www\\.)[\\S]++");
 
         Matcher URLs = extractURLs.matcher(message);
         while (URLs.find()) {
             String url = URLs.group();
-            try {
-                hyperlinks.put(url, new URL(url));
-            } catch (MalformedURLException e) {
-                logger.log(Level.WARNING, "MalformedURLException: " + url, e);
-            }
+            hyperlinks.put(url, url);
         }
 
         return hyperlinks;
     }
 
-    protected static Map<String, URL> extractHyperlinks(String message) {
-        Map<String, URL> hyperlinks = new HashMap<String, URL>();
+    protected static Map<String, String> extractHyperlinks(String message) {
+        Map<String, String> hyperlinks = new HashMap<String, String>();
 
         extractMentions(message, hyperlinks);
         extractHashtags(message, hyperlinks);

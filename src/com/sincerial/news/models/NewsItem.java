@@ -21,7 +21,7 @@ public class NewsItem {
     String category;
     String author;
     String message;
-    Map<String, URL> hyperlinks;
+    Map<String, String> hyperlinks;
 
     /**
      * No-args constructor for Gson deserialization
@@ -37,7 +37,7 @@ public class NewsItem {
      * @param message The actual message or article
      */
     public NewsItem(String id, String category, String author, String message) {
-        this(id, category, author, message, Collections.<String, URL>emptyMap());
+        this(id, category, author, message, Collections.<String, String>emptyMap());
     }
 
     /**
@@ -49,7 +49,7 @@ public class NewsItem {
      * @param message The actual message or article
      * @param hyperlinks A {@link Map}<{@link String}, {@link URL}> mapping anchor text to hyperlink
      */
-    public NewsItem(String id, String category, String author, String message, Map<String, URL> hyperlinks) {
+    public NewsItem(String id, String category, String author, String message, Map<String, String> hyperlinks) {
         this.id = id;
         this.category = category;
         this.author = author;
@@ -80,5 +80,5 @@ public class NewsItem {
     /**
      * @return A {@link Map}<{@link String}, {@link URL}> mapping anchor text to hyperlink
      */
-    public Map<String, URL> getHyperlinks() {return hyperlinks;}
+    public Map<String, String> getHyperlinks() {return hyperlinks;}
 }

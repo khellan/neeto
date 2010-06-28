@@ -21,7 +21,7 @@ import java.util.Map;
 public class NewsItemTest {
     Gson gson;
     NewsItem newsItem;
-    Map<String, URL> hyperlinks;
+    Map<String, String> hyperlinks;
     String json;
 
     public static final String AUTHOR = "anAuthor";
@@ -34,8 +34,8 @@ public class NewsItemTest {
     @Before
     public void setUp() throws MalformedURLException {
         gson = new Gson();
-        hyperlinks = new HashMap<String, URL>();
-        hyperlinks.put(ANCHOR_TEXT, new URL(HYPERLINK));
+        hyperlinks = new HashMap<String, String>();
+        hyperlinks.put(ANCHOR_TEXT, HYPERLINK);
         newsItem = new NewsItem(ID, CATEGORY, AUTHOR, MESSAGE, hyperlinks);
         json = "{\"product_id\":\"" + ID + "\",\"category\":\"" + CATEGORY + "\"," +
                 "\"author\":\"" + AUTHOR +"\",\"message\":\"" + MESSAGE + "\"," +
