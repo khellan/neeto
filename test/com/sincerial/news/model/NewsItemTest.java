@@ -1,4 +1,4 @@
-package com.sincerial.news.models;
+package com.sincerial.news.model;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 

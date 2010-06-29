@@ -1,4 +1,4 @@
-package com.sincerial.news.models;
+package com.sincerial.news.model;
 
 import com.google.gson.annotations.SerializedName;
 

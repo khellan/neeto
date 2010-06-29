@@ -1,4 +1,4 @@
-package com.sincerial.news.models;
+package com.sincerial.news.model;
 
 /**
  * Created by IntelliJ IDEA.
@@ -7,13 +7,10 @@ package com.sincerial.news.models;
  * Time: 1:30:48 PM
  */
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -88,7 +85,8 @@ public class TweetRetriever implements NewsRetriever {
 
     protected static Map<String, String> extractHashtags(String message, Map<String, String> hyperlinks) {
         Logger logger = Logger.getLogger(TweetRetriever.class.getPackage().getName());
-        Pattern extractHashtags = Pattern.compile("#[\\w\\xc0-\\xd6\\xd8-\\xf6\\xf8-\\xff0-9_]+");
+        //(?<!&)(#[\w\xc0-\xd6\xd8-\xf6\xf8-\xff0-9_]+)
+        Pattern extractHashtags = Pattern.compile("(?<!&)(#[\\w\\xc0-\\xd6\\xd8-\\xf6\\xf8-\\xff0-9_]+)");
 
         Matcher hashtags = extractHashtags.matcher(message);
         while (hashtags.find()) {
