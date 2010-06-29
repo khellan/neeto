@@ -1,4 +1,4 @@
-package com.sincerial.news.models;
+package com.sincerial.news.model;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,6 +19,7 @@ import java.io.OutputStreamWriter;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
@@ -28,13 +29,16 @@ import com.google.gson.annotations.SerializedName;
  * Class responsible for all communcation with Sincerial
  */
 public class Sincerializer {
+    public static final String URL_PARAMETER = "SincerialUrl";
+    public static final String NEWS_RANK_PATH_PARAMETER = "SincerialNewsRankPath";
+    public static final String LIKE_PATH_PARAMETER = "SincerialLikePath";
+    public static final String VENDOR_ID_PARAMETER = "SincerialVendorId";
+    public static final String CONNECTION_TIMEOUT_PARAMETER = "SincerialConnectionTimeout";
+    public static final String READ_TIMEOUT_PARAMETER = "SincerialReadTimeout";
 
-    public static final String URL = "http://localhost:3000/";
-    public static final String NEWS_RANK_PATH = "rank/news";
-    public static final String LIKE_PATH = "report_interest";
-    public static final String VENDOR_ID = "301";
-    public static final int CONNECTION_TIMEOUT = 500;
     public static final String ENCODING = "UTF-8";
+
+    protected Map<String, String> parameterMap;
 
     /**
      * Class responsible for being turend into a JSON hash to be eaten by the Sincerial servers
@@ -75,6 +79,10 @@ public class Sincerializer {
         SincerialNewsResponse() {}
     }
 
+    public Sincerializer(Map<String, String> parameterMap) {
+        this.parameterMap = parameterMap;
+    }
+
     /**
      * Sends the {@link NewsItem}s to Sincerial for ranking
      *
@@ -87,17 +95,18 @@ public class Sincerializer {
      */
     public List<NewsItem> getRankedNews(List<NewsItem> newsItems, String userId, String password)
             throws RetrievalException, IOException {
-        String url = URL + NEWS_RANK_PATH;
+        String url = parameterMap.get(URL_PARAMETER) + parameterMap.get(NEWS_RANK_PATH_PARAMETER);
         Gson gson = new Gson();
-        SincerialNewsPayload payload = new SincerialNewsPayload(userId, password, VENDOR_ID, newsItems);
+        SincerialNewsPayload payload = new SincerialNewsPayload(
+                userId, password, parameterMap.get(VENDOR_ID_PARAMETER), newsItems);
 
         Logger logger = Logger.getLogger(Sincerializer.class.getPackage().getName());
         try {
             URL requestURL = new URL(url);
             URLConnection connection = requestURL.openConnection();
 
-            connection.setConnectTimeout(CONNECTION_TIMEOUT);
-            connection.setReadTimeout(CONNECTION_TIMEOUT);
+            connection.setConnectTimeout(Integer.parseInt(parameterMap.get(CONNECTION_TIMEOUT_PARAMETER)));
+            connection.setReadTimeout(Integer.parseInt(parameterMap.get(READ_TIMEOUT_PARAMETER)));
             connection.setDoInput(true);
             connection.setDoOutput(true);
 
@@ -130,18 +139,20 @@ public class Sincerializer {
      * @throws IOException If there are problems with the response from the Sincerial system
      */
     public boolean setLikedNews(NewsItem newsItem, String userId, String password, boolean like) throws IOException {
-        String url = URL + LIKE_PATH + "/" + VENDOR_ID + "/" + userId;
+        String url = parameterMap.get(URL_PARAMETER) + parameterMap.get(LIKE_PATH_PARAMETER) + "/" +
+                parameterMap.get(VENDOR_ID_PARAMETER) + "/" + userId;
         Gson gson = new Gson();
         List<NewsItem> newsItems = new ArrayList<NewsItem>();
         newsItems.add(newsItem);
-        SincerialNewsPayload payload = new SincerialNewsPayload(userId, password, VENDOR_ID, newsItems);
+        SincerialNewsPayload payload = new SincerialNewsPayload(
+                userId, password, parameterMap.get(VENDOR_ID_PARAMETER), newsItems);
         Logger logger = Logger.getLogger(Sincerializer.class.getPackage().getName());
 
         URL requestURL = new URL(url);
         URLConnection connection = requestURL.openConnection();
 
-        connection.setConnectTimeout(CONNECTION_TIMEOUT);
-        connection.setReadTimeout(CONNECTION_TIMEOUT);
+        connection.setConnectTimeout(Integer.parseInt(parameterMap.get(CONNECTION_TIMEOUT_PARAMETER)));
+        connection.setReadTimeout(Integer.parseInt(parameterMap.get(READ_TIMEOUT_PARAMETER)));
         connection.setDoInput(true);
         connection.setDoOutput(true);
 

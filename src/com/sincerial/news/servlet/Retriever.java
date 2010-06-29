@@ -5,18 +5,20 @@
  * Time: 3:28:09 PM
  */
 
-package com.sincerial.news.servlets;
+package com.sincerial.news.servlet;
 
 import java.io.*;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.*;
 
 import com.google.gson.Gson;
 
-import com.sincerial.news.models.*;
+import com.sincerial.news.listener.ServletParameterMapper;
+import com.sincerial.news.model.*;
 
 /**
  * A servlet that collects your news and presents a view that is personalized for you
@@ -62,7 +64,9 @@ public class Retriever extends HttpServlet {
 
         logger.info(MAX_RETRIES - twitterRetries + " retries for twitter, " + twitterNews.size() + " tweets");
         logger.fine(new Gson().toJson(twitterNews));
-        Sincerializer sincerializer = new Sincerializer();
+        @SuppressWarnings("unchecked")
+        Sincerializer sincerializer = new Sincerializer(
+                (Map<String, String>)getServletContext().getAttribute(ServletParameterMapper.PARAMETER_MAP_NAME));
 
         List<NewsItem> personalNews = twitterNews;
         while (twitterSuccess && !sincerialSuccess && sincerialRetries > 0 && !"".equals(userId)) {

@@ -1,13 +1,15 @@
-package com.sincerial.news.servlets;
+package com.sincerial.news.servlet;
 
-import com.sincerial.news.models.NewsItem;
-import com.sincerial.news.models.Sincerializer;
+import com.sincerial.news.listener.ServletParameterMapper;
+import com.sincerial.news.model.NewsItem;
+import com.sincerial.news.model.Sincerializer;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -38,7 +40,9 @@ public class Liker extends HttpServlet {
         String userId = request.getParameter(USER_ID);
 
         NewsItem newsItem = new NewsItem(productId, category, author, message);
-        Sincerializer sincerializer = new Sincerializer();
+        @SuppressWarnings("unchecked")
+        Sincerializer sincerializer = new Sincerializer(
+                (Map<String, String>)getServletContext().getAttribute(ServletParameterMapper.PARAMETER_MAP_NAME));
 
         String sincerialUserId = vendorId + "_" + userId;
         System.out.println("What's to like?");

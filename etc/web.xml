@@ -3,14 +3,44 @@
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee/web-app_2_5.xs"
                  version="2.5">
+    <context-param>
+        <param-name>SincerialUrl</param-name>
+        <param-value>http://localhost:3000/</param-value>
+    </context-param>
+    <context-param>
+        <param-name>SincerialNewsRankPath</param-name>
+        <param-value>rank/news</param-value>
+    </context-param>
+    <context-param>
+        <param-name>SincerialLikePath</param-name>
+        <param-value>report_interest</param-value>
+    </context-param>
+    <context-param>
+        <param-name>SincerialVendorId</param-name>
+        <param-value>301</param-value>
+    </context-param>
+    <context-param>
+        <param-name>SincerialConnectionTimeout</param-name>
+        <param-value>500</param-value>
+    </context-param>
+    <context-param>
+        <param-name>SincerialReadTimeout</param-name>
+        <param-value>500</param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>
+            com.sincerial.news.listener.ServletParameterMapper
+        </listener-class>
+    </listener>
     <servlet>
         <servlet-name>Retriever</servlet-name>
-        <servlet-class>com.sincerial.news.servlets.Retriever</servlet-class>
+        <servlet-class>com.sincerial.news.servlet.Retriever</servlet-class>
     </servlet>
 
     <servlet>
         <servlet-name>Liker</servlet-name>
-        <servlet-class>com.sincerial.news.servlets.Liker</servlet-class>
+        <servlet-class>com.sincerial.news.servlet.Liker</servlet-class>
     </servlet>
 
     <servlet-mapping>
