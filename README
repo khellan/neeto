@@ -12,12 +12,14 @@ TODO:
 [X] Public timeline if not logged in
 [X] Links will be links
 [X] Menubar with "sign in" if not logged in and "sign out" if logged in
-[ ] User servlet handling "sign in" and "sign out" with cookie
+[X] From index.html to a servlet serving index.jsp
+[ ] "Sing in" or "Sign out" determined by servlet and shown by index.jsp  
+[ ] User servlet handling "sign in" through HttpSession
+[ ] User servlet handling "Sing out" through HttpSession
 
 If result is good:
-[ ] User creation (Sincerial)
 [ ] OAuth with Twitter
 [ ] User creation (Sincerial) with twitter-derived userid
+[ ] Servlet functionality to profilemanager (in Ruby)
 [ ] Basic Android version
 [ ] UI/UX improved Android version
-[ ] Servlet functionality to profilemanager (in Ruby)
