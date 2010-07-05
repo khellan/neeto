@@ -9,6 +9,11 @@ body {
   margin-right: 1em;
 }
 
+.menu li {
+  display: inline;
+  padding-left: 2px;
+}
+
 header {
   text-align: center;
 }
@@ -37,8 +42,8 @@ header h2 {
 #feed_items li button {
   position:relative;
   width: 5em;
-  right: 16px;
-  top: 21px;
+  left: 685px;
+  top: -3px;
   margin: 0;
 }
 
@@ -48,14 +53,15 @@ header h2 {
   padding: 0;
   top: -25px;
   left: 20px;
+  font-weight: bold;
 }
 
 #feed_items li .message {
   position:relative;
-  margin: 0;
-  margin-right: 80px;
+  margin: 5px 5px 0 0;
+  margin-right: 5px;
   padding: 0;
-  left: 75px;
+  left: 0px;
   top: -20px;
 }
 

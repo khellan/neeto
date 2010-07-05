@@ -10,6 +10,7 @@
 
 <body>
     <ul class="menu">
+        <li id="signed_in_user_id"></li>
         <li>
             <a href="#" id="sign_in">Sign in</a>
             <a href="#" id="sign_out">Sign out</a>
@@ -25,10 +26,13 @@
             <script type="text/javascript">
                 com.sincerial.news.initialize_sign_in("#sign_in", "#sign_in_area", "#sign_in_form", "#sign_in_button");
                 com.sincerial.news.initialize_sign_out("#sign_out");
-                <% if (session.getAttribute("user_id") == null) { %>
+                <%
+                    String userId = (String)session.getAttribute("user_id");
+                %>
+                <% if (userId == null) { %>
                     com.sincerial.news.signed_out();
                 <% } else { %>
-                    com.sincerial.news.signed_in();
+                    com.sincerial.news.signed_in("<%= userId %>");
                 <% } %>
             </script>
         </li>

@@ -72,7 +72,7 @@ com.sincerial.news.submit_sign_in = function() {
         },
         function(response) {
             $(com.sincerial.news.sign_in_area_id).hide();
-            com.sincerial.news.signed_in();
+            com.sincerial.news.signed_in($("#sign_in_user_id").val());
             com.sincerial.news.request_feed();
         }
     )
@@ -89,9 +89,10 @@ com.sincerial.news.sign_out = function() {
     );
 }
 
-com.sincerial.news.signed_in = function() {
+com.sincerial.news.signed_in = function(user_id) {
     $(com.sincerial.news.sign_in_element_id).hide();
-    $(com.sincerial.news.sign_out_element_id).show();             
+    $(com.sincerial.news.sign_out_element_id).show();
+    $("#signed_in_user_id").html(user_id + " | ");
 }
 
 com.sincerial.news.signed_out = function() {
