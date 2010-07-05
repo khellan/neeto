@@ -4,6 +4,7 @@
     <title>Neeto</title>
     <script type="text/javascript" src="scripts/jquery.js"></script>
     <script type="text/javascript" src="scripts/neeto.js"></script>
+    <link rel="stylesheet" href="styles/neeto.css" type="text/css" />
     <meta charset="utf-8">
 </head>
 
