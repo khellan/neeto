@@ -1,3 +1,7 @@
+body {
+  width: 800px;
+}
+
 .menu {
   font-size: 78%;
   list-style-type: none;
@@ -5,10 +9,15 @@
   margin-right: 1em;
 }
 
+header {
+  text-align: center;
+}
+
 header h1 {
   margin-left: 20px;
   margin-bottom: 0;
   padding-bottom: 0;
+  color: #282;
   font-variant: small-caps;
 }
 
@@ -25,3 +34,33 @@ header h2 {
   padding-left: 0;
 }
 
+#feed_items li button {
+  position:relative;
+  width: 5em;
+  right: 16px;
+  top: 21px;
+  margin: 0;
+}
+
+#feed_items li .author {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  top: -25px;
+  left: 20px;
+}
+
+#feed_items li .message {
+  position:relative;
+  margin: 0;
+  margin-right: 80px;
+  padding: 0;
+  left: 75px;
+  top: -20px;
+}
+
+#feed_items li {
+  background-color: #f8fff8;
+  padding: 10px 0px 0px 10px;
+  margin: 0 0 10px 0;
+}
