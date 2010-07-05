@@ -13,13 +13,16 @@ TODO:
 [X] Links will be links
 [X] Menubar with "sign in" if not logged in and "sign out" if logged in
 [X] From index.html to a servlet serving index.jsp
-[ ] "Sing in" or "Sign out" determined by servlet and shown by index.jsp  
-[ ] User servlet handling "sign in" through HttpSession
-[ ] User servlet handling "Sing out" through HttpSession
+[X] "Sign in" or "Sign out" determined by servlet and shown by index.jsp
+[X] User servlet handling "sign in" through HttpSession
+[X] User servlet handling "Sing out" through HttpSession
+[ ] CSS for the looksTM
 
 If result is good:
 [ ] OAuth with Twitter
 [ ] User creation (Sincerial) with twitter-derived userid
+[ ] Read up on PhoneGap (http://www.phonegap.com/
+[ ] Determine if PhoneGap is the way to a mobil client
 [ ] Servlet functionality to profilemanager (in Ruby)
 [ ] Basic Android version
 [ ] UI/UX improved Android version

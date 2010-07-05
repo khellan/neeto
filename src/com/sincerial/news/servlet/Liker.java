@@ -7,6 +7,7 @@ import com.sincerial.news.model.Sincerializer;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
@@ -25,11 +26,12 @@ public class Liker extends HttpServlet {
     public static final String AUTHOR = "author";
     public static final String LIKE = "like";
     public static final String VENDOR_ID = "vendor_id";
-    public static final String USER_ID = "user_id";
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html; charset=UTF-8");
         PrintWriter out = response.getWriter();
+
+        HttpSession session = request.getSession();
 
         String productId = request.getParameter(PRODUCT_ID);
         String category = request.getParameter(CATEGORY);
@@ -37,7 +39,8 @@ public class Liker extends HttpServlet {
         String author = request.getParameter(AUTHOR);
         boolean like = Boolean.parseBoolean(request.getParameter(LIKE));
         String vendorId = request.getParameter(VENDOR_ID);
-        String userId = request.getParameter(USER_ID);
+        @SuppressWarnings("unchecked")
+        String userId = (String)session.getAttribute(SignIn.USER_ID);
 
         NewsItem newsItem = new NewsItem(productId, category, author, message);
         @SuppressWarnings("unchecked")

@@ -17,6 +17,7 @@ import javax.servlet.http.*;
 
 import com.google.gson.Gson;
 
+import com.google.gson.annotations.SerializedName;
 import com.sincerial.news.listener.ServletParameterMapper;
 import com.sincerial.news.model.*;
 
@@ -26,8 +27,18 @@ import com.sincerial.news.model.*;
 public class Retriever extends HttpServlet {
     public static final int MAX_RETRIES = 3;
     public static final String VENDOR_ID = "vendor_id";
-    public static final String USER_ID = "user_id";
-    public static final String PASSWORD = "password";
+
+    public static class NewsItemPackage {
+        @SerializedName("signed_in") boolean signedIn;
+        List<NewsItem> items;
+
+        NewsItemPackage() {}
+
+        NewsItemPackage(boolean signedIn, List<NewsItem> newsItems) {
+            this.signedIn = signedIn;
+            this.items = newsItems;
+        }
+    }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html; charset=UTF-8");
@@ -41,18 +52,23 @@ public class Retriever extends HttpServlet {
 
         List<NewsItem> twitterNews = Collections.emptyList();
 
+        HttpSession session = request.getSession();
+
         String vendorId = request.getParameter(VENDOR_ID);
-        String userId = request.getParameter(USER_ID);
-        String password = request.getParameter(PASSWORD);
+        @SuppressWarnings("unchecked")
+        String userId = (String)session.getAttribute(SignIn.USER_ID);
+        boolean signedIn = (userId != null) && !"".equals(userId);
+        @SuppressWarnings("unchecked")
+        String password = (String)session.getAttribute(SignIn.PASSWORD);
 
         Logger logger = Logger.getLogger(Retriever.class.getPackage().getName());
         TweetRetriever retriever = new TweetRetriever();
         while (!twitterSuccess && twitterRetries > 0) {
             try {
-                if ("".equals(userId)) {
-                    twitterNews = retriever.getPublicTimeline();
-                } else {
+                if (signedIn) {
                     twitterNews = retriever.getUserTimeline(userId, password);
+                } else {
+                    twitterNews = retriever.getPublicTimeline();
                 }
                 twitterSuccess = true;
             } catch (RetrievalException e) {
@@ -83,8 +99,9 @@ public class Retriever extends HttpServlet {
         }
 
         logger.info(MAX_RETRIES - sincerialRetries + " retries for Sincerial");
-        
-        String json = new Gson().toJson(personalNews);
+
+        NewsItemPackage newsItemPackage = new NewsItemPackage(signedIn, personalNews);
+        String json = new Gson().toJson(newsItemPackage);
         logger.fine(json);
         out.println(json);
     }
