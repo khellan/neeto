@@ -13,6 +13,7 @@ com.sincerial.news.SIGN_IN_URL = 'sign_in';
 com.sincerial.news.SIGN_OUT_URL = 'sign_out';
 com.sincerial.news.VENDOR_ID = '301';
 com.sincerial.news.CATEGORY = 'news';
+com.sincerial.news.NOVELTY_TIME = 3600;
 
 $(document).ready(
     function(event) {
@@ -136,6 +137,7 @@ com.sincerial.news.request_feed = function() {
         com.sincerial.news.FEED_URL,
         {
             'vendor_id': com.sincerial.news.VENDOR_ID,
+            'novelty_time': com.sincerial.news.NOVELTY_TIME
         },
         function(news_item_package) {
             com.sincerial.news.show_feed(news_item_package);

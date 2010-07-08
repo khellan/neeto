@@ -28,7 +28,8 @@ import com.sincerial.news.model.*;
 public class Retriever extends HttpServlet {
     public static final int MAX_RETRIES = 3;
     public static final String VENDOR_ID = "vendor_id";
-
+    public static final String NOVELTY_TIME_ID = "novelty_time";
+    
     public static class NewsItemPackage {
         @SerializedName("signed_in") boolean signedIn;
         List<NewsItem> items;
@@ -58,6 +59,7 @@ public class Retriever extends HttpServlet {
         HttpSession session = request.getSession();
 
         String vendorId = request.getParameter(VENDOR_ID);
+        long noveltyTime = Long.parseLong(request.getParameter(NOVELTY_TIME_ID));
         @SuppressWarnings("unchecked")
         String userId = (String)session.getAttribute(SignIn.USER_ID);
         boolean signedIn = (userId != null) && !"".equals(userId);
@@ -90,7 +92,7 @@ public class Retriever extends HttpServlet {
         List<NewsItem> personalNews = twitterNews;
         while (twitterSuccess && !sincerialSuccess && sincerialRetries > 0 && !"".equals(userId)) {
             try {
-                personalNews = sincerializer.getRankedNews(twitterNews, vendorId + "_" + userId, "");
+                personalNews = sincerializer.getRankedNews(twitterNews, vendorId + "_" + userId, "", noveltyTime);
                 sincerialSuccess = true;
             } catch (RetrievalException e) {
                 logger.log(Level.WARNING, "RetrievalException from Sincerial", e);
@@ -103,7 +105,7 @@ public class Retriever extends HttpServlet {
 
         logger.info(MAX_RETRIES - sincerialRetries + " retries for Sincerial");
 
-        NewsItemPackage newsItemPackage = new NewsItemPackage(signedIn, personalNews, (new Date()).getTime());
+        NewsItemPackage newsItemPackage = new NewsItemPackage(signedIn, personalNews, (new Date()).getTime() / 1000);
         String json = new Gson().toJson(newsItemPackage);
         logger.fine(json);
         out.println(json);

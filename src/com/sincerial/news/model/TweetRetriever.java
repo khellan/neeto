@@ -123,7 +123,7 @@ public class TweetRetriever implements NewsRetriever {
     protected NewsItem parseTweet(Status status) {
         return new NewsItem(Long.toString(
                 status.getId()), CATEGORY, status.getUser().getName(),
-                status.getCreatedAt().getTime(),
+                status.getCreatedAt().getTime() / 1000,
                 status.getText(), extractHyperlinks(status.getText()));
     }
 

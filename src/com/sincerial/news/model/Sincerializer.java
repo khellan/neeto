@@ -48,17 +48,19 @@ public class Sincerializer {
         String password;
         @SerializedName("vendor_id") String vendorId;
         @SerializedName("news_items") List<NewsItem> newsItems;
+        @SerializedName("novelty_time") long noveltyTime;
 
         /**
          * No-args constructor for Gson deserialization
          */
         SincerialNewsPayload() {}
 
-        SincerialNewsPayload(String userId, String password, String vendorId, List<NewsItem> newsItems) {
+        SincerialNewsPayload(String userId, String password, String vendorId, List<NewsItem> newsItems, long noveltyTime) {
             this.userId = userId;
             this.password = password;
             this.vendorId = vendorId;
             this.newsItems = newsItems;
+            this.noveltyTime = noveltyTime;
         }
     }
 
@@ -89,16 +91,17 @@ public class Sincerializer {
      * @param newsItems A {@link List} of {@link NewsItem}s to rank
      * @param userId The Sincerial user id to rank for as a {@link String}
      * @param password The Sincerial password of the user {@link String}
+     * @param noveltyTime The time constant for novelty ranking
      * @return The {@link List} of {@link NewsItem}s ranked for the user by Sincerial
      * @throws RetrievalException If there are communication issues with the Sincerial system
      * @throws IOException If there are problems with the response from the Sincerial system
      */
-    public List<NewsItem> getRankedNews(List<NewsItem> newsItems, String userId, String password)
+    public List<NewsItem> getRankedNews(List<NewsItem> newsItems, String userId, String password, long noveltyTime)
             throws RetrievalException, IOException {
         String url = parameterMap.get(URL_PARAMETER) + parameterMap.get(NEWS_RANK_PATH_PARAMETER);
         Gson gson = new Gson();
         SincerialNewsPayload payload = new SincerialNewsPayload(
-                userId, password, parameterMap.get(VENDOR_ID_PARAMETER), newsItems);
+                userId, password, parameterMap.get(VENDOR_ID_PARAMETER), newsItems, noveltyTime);
 
         Logger logger = Logger.getLogger(Sincerializer.class.getPackage().getName());
         try {
@@ -138,14 +141,15 @@ public class Sincerializer {
      * @return Whether the reporting to Sincerial was a success (true is good, false not so)
      * @throws IOException If there are problems with the response from the Sincerial system
      */
-    public boolean setLikedNews(NewsItem newsItem, String userId, String password, boolean like) throws IOException {
+    public boolean setLikedNews(NewsItem newsItem, String userId, String password, boolean like)
+            throws IOException {
         String url = parameterMap.get(URL_PARAMETER) + parameterMap.get(LIKE_PATH_PARAMETER) + "/" +
                 parameterMap.get(VENDOR_ID_PARAMETER) + "/" + userId;
         Gson gson = new Gson();
         List<NewsItem> newsItems = new ArrayList<NewsItem>();
         newsItems.add(newsItem);
         SincerialNewsPayload payload = new SincerialNewsPayload(
-                userId, password, parameterMap.get(VENDOR_ID_PARAMETER), newsItems);
+                userId, password, parameterMap.get(VENDOR_ID_PARAMETER), newsItems, 0);
         Logger logger = Logger.getLogger(Sincerializer.class.getPackage().getName());
 
         URL requestURL = new URL(url);

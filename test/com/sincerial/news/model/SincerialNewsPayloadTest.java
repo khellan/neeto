@@ -34,6 +34,7 @@ public class SincerialNewsPayloadTest {
     public static final String AUTHOR2 = "anotherAuthor";
     public static final String MESSAGE2 = "then this must be a message too";
     public static final long TIMESTAMP2 = 7;
+    public static final long NOVELTY_TIME = 56;
 
     @Before
     public void setUp() {
@@ -41,9 +42,10 @@ public class SincerialNewsPayloadTest {
         newsItems = new ArrayList<NewsItem>();
         newsItems.add(new NewsItem(ID1, CATEGORY1, AUTHOR1, TIMESTAMP1, MESSAGE1));
         newsItems.add(new NewsItem(ID2, CATEGORY2, AUTHOR2, TIMESTAMP2, MESSAGE2));
-        newsPayload = new Sincerializer.SincerialNewsPayload(USER_ID, PASSWORD, VENDOR_ID, newsItems);
+        newsPayload = new Sincerializer.SincerialNewsPayload(USER_ID, PASSWORD, VENDOR_ID, newsItems, NOVELTY_TIME);
         json = "{\"user_id\":\"" + USER_ID + "\",\"password\":\"" + PASSWORD + "\"," +
-                "\"vendor_id\":\"" + VENDOR_ID + "\",\"news_items\":" + gson.toJson(newsItems) + "}";
+                "\"vendor_id\":\"" + VENDOR_ID + "\",\"news_items\":" + gson.toJson(newsItems) + "," +
+                "\"novelty_time\":" + NOVELTY_TIME + "}";
     }
 
     @Test
