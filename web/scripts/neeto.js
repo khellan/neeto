@@ -201,7 +201,7 @@ com.sincerial.news.show_feed = function(news_item_package) {
     var items = news_item_package.items; 
     for (var i in items) {
         var item = items[i];
-        html += "<li>";
+        html += "<li" + (item.boosted ? " class='boosted_item'" : "") + ">";
         html += "<img src='images/twitter_t.png'>";
         if (signed_in) {
             html += "<button id='" + item.product_id + "' type='button'>Like</button>"

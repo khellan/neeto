@@ -23,6 +23,7 @@ public class NewsItem {
     long timestamp;
     String message;
     Map<String, String> hyperlinks;
+    boolean boosted;
 
     /**
      * No-args constructor for Gson deserialization
@@ -39,7 +40,7 @@ public class NewsItem {
      * @param message The actual message or article
      */
     public NewsItem(String id, String category, String author, long timestamp, String message) {
-        this(id, category, author, timestamp, message, Collections.<String, String>emptyMap());
+        this(id, category, author, timestamp, message, Collections.<String, String>emptyMap(), false);
     }
 
     /**
@@ -54,12 +55,29 @@ public class NewsItem {
      */
     public NewsItem(String id, String category, String author, long timestamp,
                     String message, Map<String, String> hyperlinks) {
+        this(id, category, author, timestamp, message, hyperlinks, false);
+    }
+
+    /**
+     * Constructs a NewsItem
+     *
+     * @param id The id of this message
+     * @param category The category of this message
+     * @param author The author of this message or article if known
+     * @param timestamp The timestamp of the message
+     * @param message The actual message or article
+     * @param hyperlinks A {@link Map}<{@link String}, {@link URL}> mapping anchor text to hyperlink
+     * @param boosted Whether this news item has been boosted or not
+     */
+    public NewsItem(String id, String category, String author, long timestamp,
+                    String message, Map<String, String> hyperlinks, boolean boosted) {
         this.id = id;
         this.category = category;
         this.author = author;
         this.message = message;
         this.hyperlinks = hyperlinks;
         this.timestamp = timestamp;
+        this.boosted = boosted;
     }
 
     /**

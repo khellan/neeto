@@ -36,13 +36,14 @@ public class NewsItemTest {
         gson = new Gson();
         hyperlinks = new HashMap<String, String>();
         hyperlinks.put(ANCHOR_TEXT, HYPERLINK);
-        newsItem = new NewsItem(ID, CATEGORY, AUTHOR, TIMESTAMP, MESSAGE, hyperlinks);
+        newsItem = new NewsItem(ID, CATEGORY, AUTHOR, TIMESTAMP, MESSAGE, hyperlinks, true);
         json = "{\"product_id\":\"" + ID + "\"," +
                 "\"category\":\"" + CATEGORY + "\"," +
                 "\"author\":\"" + AUTHOR +"\"," +
                 "\"timestamp\":1278591231," +
                 "\"message\":\"" + MESSAGE + "\"," +
-                "\"hyperlinks\":{\"" + ANCHOR_TEXT + "\":\"" + HYPERLINK + "\"}}";
+                "\"hyperlinks\":{\"" + ANCHOR_TEXT + "\":\"" + HYPERLINK + "\"}," +
+                "\"boosted\":true}";
     }
 
     @Test

@@ -88,6 +88,10 @@ header h2 {
   margin: 0 0 10px 0;
 }
 
+#feed_items .boosted_item {
+  border: 1px solid #282;
+}
+
 #sign_in_area {
   position: relative;
 }
