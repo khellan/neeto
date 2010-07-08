@@ -28,17 +28,19 @@ public class SincerialNewsPayloadTest {
     public static final String CATEGORY1 = "bullshit";
     public static final String AUTHOR1 = "anAuthor";
     public static final String MESSAGE1 = "is this a message";
+    public static final long TIMESTAMP1 = 1278591231;
     public static final String ID2 = "abc";
     public static final String CATEGORY2 = "bullcrap";
     public static final String AUTHOR2 = "anotherAuthor";
     public static final String MESSAGE2 = "then this must be a message too";
+    public static final long TIMESTAMP2 = 7;
 
     @Before
     public void setUp() {
         gson = new Gson();
         newsItems = new ArrayList<NewsItem>();
-        newsItems.add(new NewsItem(ID1, CATEGORY1, AUTHOR1, MESSAGE1));
-        newsItems.add(new NewsItem(ID2, CATEGORY2, AUTHOR2, MESSAGE2));
+        newsItems.add(new NewsItem(ID1, CATEGORY1, AUTHOR1, TIMESTAMP1, MESSAGE1));
+        newsItems.add(new NewsItem(ID2, CATEGORY2, AUTHOR2, TIMESTAMP2, MESSAGE2));
         newsPayload = new Sincerializer.SincerialNewsPayload(USER_ID, PASSWORD, VENDOR_ID, newsItems);
         json = "{\"user_id\":\"" + USER_ID + "\",\"password\":\"" + PASSWORD + "\"," +
                 "\"vendor_id\":\"" + VENDOR_ID + "\",\"news_items\":" + gson.toJson(newsItems) + "}";

@@ -9,6 +9,13 @@ body {
   margin-right: 1em;
 }
 
+#update_timestamp {
+  font-size: 78%;
+  list-style-type: none;
+  text-align: right;
+  margin-right: 1em;
+}
+
 .menu li {
   display: inline;
   padding-left: 2px;
@@ -54,6 +61,15 @@ header h2 {
   top: -25px;
   left: 20px;
   font-weight: bold;
+  height: 1px;
+}
+
+#feed_items li .timestamp {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  top: -24px;
+  left: 200px;
 }
 
 #feed_items li .message {
@@ -62,7 +78,8 @@ header h2 {
   margin-right: 5px;
   padding: 0;
   left: 0px;
-  top: -20px;
+  top: -24px;
+  height: 20px;
 }
 
 #feed_items li {

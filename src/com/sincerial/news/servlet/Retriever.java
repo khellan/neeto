@@ -9,6 +9,7 @@ package com.sincerial.news.servlet;
 
 import java.io.*;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -31,12 +32,14 @@ public class Retriever extends HttpServlet {
     public static class NewsItemPackage {
         @SerializedName("signed_in") boolean signedIn;
         List<NewsItem> items;
+        long timestamp;
 
         NewsItemPackage() {}
 
-        NewsItemPackage(boolean signedIn, List<NewsItem> newsItems) {
+        NewsItemPackage(boolean signedIn, List<NewsItem> newsItems, long timestamp) {
             this.signedIn = signedIn;
             this.items = newsItems;
+            this.timestamp = timestamp;
         }
     }
 
@@ -100,7 +103,7 @@ public class Retriever extends HttpServlet {
 
         logger.info(MAX_RETRIES - sincerialRetries + " retries for Sincerial");
 
-        NewsItemPackage newsItemPackage = new NewsItemPackage(signedIn, personalNews);
+        NewsItemPackage newsItemPackage = new NewsItemPackage(signedIn, personalNews, (new Date()).getTime());
         String json = new Gson().toJson(newsItemPackage);
         logger.fine(json);
         out.println(json);

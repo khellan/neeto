@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -71,7 +70,6 @@ public class TweetRetriever implements NewsRetriever {
     }
 
     protected static Map<String, String> extractMentions(String message, Map<String, String> hyperlinks) {
-        Logger logger = Logger.getLogger(TweetRetriever.class.getPackage().getName());
         Pattern extractMentions = Pattern.compile("@[\\w]{1,20}");
 
         Matcher mentions = extractMentions.matcher(message);
@@ -84,8 +82,6 @@ public class TweetRetriever implements NewsRetriever {
     }
 
     protected static Map<String, String> extractHashtags(String message, Map<String, String> hyperlinks) {
-        Logger logger = Logger.getLogger(TweetRetriever.class.getPackage().getName());
-        //(?<!&)(#[\w\xc0-\xd6\xd8-\xf6\xf8-\xff0-9_]+)
         Pattern extractHashtags = Pattern.compile("(?<!&)(#[\\w\\xc0-\\xd6\\xd8-\\xf6\\xf8-\\xff0-9_]+)");
 
         Matcher hashtags = extractHashtags.matcher(message);
@@ -98,7 +94,6 @@ public class TweetRetriever implements NewsRetriever {
     }
 
     protected static Map<String, String> extractURLs(String message, Map<String, String> hyperlinks) {
-        Logger logger = Logger.getLogger(TweetRetriever.class.getPackage().getName());
         Pattern extractURLs = Pattern.compile("(https?:\\/\\/|www\\.)[\\S]++");
 
         Matcher URLs = extractURLs.matcher(message);
@@ -128,6 +123,7 @@ public class TweetRetriever implements NewsRetriever {
     protected NewsItem parseTweet(Status status) {
         return new NewsItem(Long.toString(
                 status.getId()), CATEGORY, status.getUser().getName(),
+                status.getCreatedAt().getTime(),
                 status.getText(), extractHyperlinks(status.getText()));
     }
 

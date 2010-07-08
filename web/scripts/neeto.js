@@ -173,9 +173,29 @@ com.sincerial.news.format_message = function(message, hyperlinks) {
     return result;
 }
 
+com.sincerial.news.format_age = function(age) {
+    if (age >= 172800) {
+        return Math.round(age / 86400) + " days ago";
+    } else if (age >= 86400) {
+        return "1 day ago";
+    } else if (age >= 7200) {
+        return Math.round(age / 7200) + " hours ago";
+    } else if (age >= 3600) {
+        return "1 hour ago";
+    } else if (age >= 120) {
+        return Math.round(age / 60) + " minutes ago";
+    } else if (age >= 60) {
+        return "1 minute ago";
+    } else if (age > 1) {
+        return age + " seconds ago";
+    }
+    return "1 second ago";
+}
+
 com.sincerial.news.show_feed = function(news_item_package) {
     var html = "";
     var signed_in = news_item_package.signed_in;
+    var retrieval_timestamp = news_item_package.timestamp;
     var items = news_item_package.items; 
     for (var i in items) {
         var item = items[i];
@@ -185,6 +205,9 @@ com.sincerial.news.show_feed = function(news_item_package) {
             html += "<button id='" + item.product_id + "' type='button'>Like</button>"
         }
         html += "<div class='author' id='author_" + item.product_id + "'>" + item.author + "</div>";
+        var age = retrieval_timestamp - item.timestamp;
+        var timestamp_message = com.sincerial.news.format_age(age);
+        html += "<div class='timestamp' id='timestamp_" + item.product_id + "'>" + timestamp_message + "</div>";
         html += "<div class='message' id='message_" + item.product_id + "'>" +
             com.sincerial.news.format_message(item.message, item.hyperlinks) + "</div>";
         html += "</li>";
@@ -198,11 +221,13 @@ com.sincerial.news.show_feed = function(news_item_package) {
             }        
         );
     }
+    $("#update_timestamp").html((new Date(retrieval_timestamp * 1000)).toLocaleString());
 }
 
 com.sincerial.news.submit_like_button = function(product_id, button_text, click_function, like) {
     var message = $("#message_" + product_id).html();
     var author = $("#author_" + product_id).html();
+    var timestamp = $("#timestamp_" + product_id).html();
 
     $.post(
         com.sincerial.news.LIKE_URL,
@@ -212,6 +237,7 @@ com.sincerial.news.submit_like_button = function(product_id, button_text, click_
             "category": com.sincerial.news.CATEGORY,
             "message": message,
             "author": author,
+            "timestamp": timestamp,
             "like": like
         },
         function(response) {

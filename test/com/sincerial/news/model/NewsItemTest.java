@@ -29,15 +29,19 @@ public class NewsItemTest {
     public static final String HYPERLINK = "http://test.com/";
     public static final String ID = "1234567890";
     public static final String CATEGORY = "news";
+    public static final long TIMESTAMP = 1278591231;
 
     @Before
     public void setUp() throws MalformedURLException {
         gson = new Gson();
         hyperlinks = new HashMap<String, String>();
         hyperlinks.put(ANCHOR_TEXT, HYPERLINK);
-        newsItem = new NewsItem(ID, CATEGORY, AUTHOR, MESSAGE, hyperlinks);
-        json = "{\"product_id\":\"" + ID + "\",\"category\":\"" + CATEGORY + "\"," +
-                "\"author\":\"" + AUTHOR +"\",\"message\":\"" + MESSAGE + "\"," +
+        newsItem = new NewsItem(ID, CATEGORY, AUTHOR, TIMESTAMP, MESSAGE, hyperlinks);
+        json = "{\"product_id\":\"" + ID + "\"," +
+                "\"category\":\"" + CATEGORY + "\"," +
+                "\"author\":\"" + AUTHOR +"\"," +
+                "\"timestamp\":1278591231," +
+                "\"message\":\"" + MESSAGE + "\"," +
                 "\"hyperlinks\":{\"" + ANCHOR_TEXT + "\":\"" + HYPERLINK + "\"}}";
     }
 
@@ -46,6 +50,7 @@ public class NewsItemTest {
         Assert.assertEquals(ID, newsItem.getId());
         Assert.assertEquals(CATEGORY, newsItem.getCategory());
         Assert.assertEquals(AUTHOR, newsItem.getAuthor());
+        Assert.assertEquals(TIMESTAMP, newsItem.getTimestamp());
         Assert.assertEquals(MESSAGE, newsItem.getMessage());
         Assert.assertEquals(hyperlinks, newsItem.getHyperlinks());
     }
@@ -61,6 +66,7 @@ public class NewsItemTest {
         Assert.assertEquals(ID, deserializedNewsItem.getId());
         Assert.assertEquals(CATEGORY, deserializedNewsItem.getCategory());
         Assert.assertEquals(AUTHOR, deserializedNewsItem.getAuthor());
+        Assert.assertEquals(TIMESTAMP, deserializedNewsItem.getTimestamp());
         Assert.assertEquals(MESSAGE, deserializedNewsItem.getMessage());
         Assert.assertEquals(hyperlinks, deserializedNewsItem.getHyperlinks());
     }

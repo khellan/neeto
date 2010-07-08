@@ -9,6 +9,7 @@
 </head>
 
 <body>
+
     <ul class="menu">
         <li id="signed_in_user_id">&nbsp;</li>
         <li>
@@ -39,6 +40,7 @@
             </script>
         </li>
     </ul>
+    <div id="update_timestamp">&nbsp;</div>
 
     <header>
         <h1>Neeto</h1>

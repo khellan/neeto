@@ -18,7 +18,7 @@ TODO:
 [X] User servlet handling "Sing out" through HttpSession
 [X] CSS for the looksTM
 [ ] Include timestamp for ranking
-[ ] 
+[ ] Indicate boosted tweet
 
 If result is good:
 [ ] OAuth with Twitter

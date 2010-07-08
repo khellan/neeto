@@ -20,6 +20,7 @@ public class NewsItem {
     @SerializedName("product_id") String id;
     String category;
     String author;
+    long timestamp;
     String message;
     Map<String, String> hyperlinks;
 
@@ -34,10 +35,11 @@ public class NewsItem {
      * @param id The id of this message
      * @param category The category of this message
      * @param author The author of this message or article if known
+     * @param timestamp The timestamp of the message
      * @param message The actual message or article
      */
-    public NewsItem(String id, String category, String author, String message) {
-        this(id, category, author, message, Collections.<String, String>emptyMap());
+    public NewsItem(String id, String category, String author, long timestamp, String message) {
+        this(id, category, author, timestamp, message, Collections.<String, String>emptyMap());
     }
 
     /**
@@ -46,15 +48,18 @@ public class NewsItem {
      * @param id The id of this message
      * @param category The category of this message
      * @param author The author of this message or article if known
+     * @param timestamp The timestamp of the message
      * @param message The actual message or article
      * @param hyperlinks A {@link Map}<{@link String}, {@link URL}> mapping anchor text to hyperlink
      */
-    public NewsItem(String id, String category, String author, String message, Map<String, String> hyperlinks) {
+    public NewsItem(String id, String category, String author, long timestamp,
+                    String message, Map<String, String> hyperlinks) {
         this.id = id;
         this.category = category;
         this.author = author;
         this.message = message;
         this.hyperlinks = hyperlinks;
+        this.timestamp = timestamp;
     }
 
     /**
@@ -71,6 +76,11 @@ public class NewsItem {
      * @return A {@link String} with the author
      */
     public String getAuthor() {return author;}
+
+    /**
+     * @return The timestamp of this message
+     */
+    public long getTimestamp() {return timestamp;}
 
     /**
      * @return A {@link String} with the message

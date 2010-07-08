@@ -23,6 +23,7 @@ public class Liker extends HttpServlet {
     public static final String PRODUCT_ID = "product_id";
     public static final String CATEGORY = "category";
     public static final String MESSAGE = "message";
+    public static final String TIMESTAMP = "timestamp";
     public static final String AUTHOR = "author";
     public static final String LIKE = "like";
     public static final String VENDOR_ID = "vendor_id";
@@ -37,12 +38,13 @@ public class Liker extends HttpServlet {
         String category = request.getParameter(CATEGORY);
         String message = request.getParameter(MESSAGE);
         String author = request.getParameter(AUTHOR);
+        long timestamp = Long.parseLong(request.getParameter(TIMESTAMP));
         boolean like = Boolean.parseBoolean(request.getParameter(LIKE));
         String vendorId = request.getParameter(VENDOR_ID);
         @SuppressWarnings("unchecked")
         String userId = (String)session.getAttribute(SignIn.USER_ID);
 
-        NewsItem newsItem = new NewsItem(productId, category, author, message);
+        NewsItem newsItem = new NewsItem(productId, category, author, timestamp, message);
         @SuppressWarnings("unchecked")
         Sincerializer sincerializer = new Sincerializer(
                 (Map<String, String>)getServletContext().getAttribute(ServletParameterMapper.PARAMETER_MAP_NAME));
