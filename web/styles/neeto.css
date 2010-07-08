@@ -70,3 +70,20 @@ header h2 {
   padding: 10px 0px 0px 10px;
   margin: 0 0 10px 0;
 }
+
+#sign_in_area {
+  position: relative;
+}
+
+#sign_in_form {
+  position: absolute;
+  right: -1px;
+  text-align: left;
+  background-color: #282;
+  border: 1px solid #f8fff8;
+  color: white;
+  padding: 3px;
+  z-index: 10;
+}
+
+

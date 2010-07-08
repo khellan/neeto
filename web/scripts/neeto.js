@@ -25,17 +25,34 @@ com.sincerial.news.sign_in_element_id;
 com.sincerial.news.sign_in_area_id;
 com.sincerial.news.sign_in_form_id;
 com.sincerial.news.sign_in_button_id;
-com.sincerial.news.initialize_sign_in = function(element_id, sign_in_area_id, sign_in_form_id, sign_in_button_id) {
+com.sincerial.news.sign_in_cancel_id;
+com.sincerial.news.initialize_sign_in = function(element_id, sign_in_area_id, sign_in_form_id,
+        sign_in_button_id, sign_in_cancel_id) {
     com.sincerial.news.sign_in_element_id = element_id;
     com.sincerial.news.sign_in_area_id = sign_in_area_id;
     com.sincerial.news.sign_in_form_id = sign_in_form_id;
     com.sincerial.news.sign_in_button_id = sign_in_button_id;
+    com.sincerial.news.sign_in_cancel_id = sign_in_cancel_id;
     $(element_id).click(
         function() {
             com.sincerial.news.sign_in();
         }
     );
-    $(com.sincerial.news.sign_in_area_id).hide();    
+    $("#sign_in_user_id").keypress(
+        function(event) {
+            if (event.keyCode == '13') {
+                $("#sign_in_password").focus();
+            }
+        }
+    )
+    $("#sign_in_password").keypress(
+        function(event) {
+            if (event.keyCode == '13') {
+                com.sincerial.news.submit_sign_in();
+            }
+        }
+    )
+    $(com.sincerial.news.sign_in_area_id).hide();
 }
 
 com.sincerial.news.sign_out_element_id;
@@ -50,6 +67,7 @@ com.sincerial.news.initialize_sign_out = function(element_id) {
 
 com.sincerial.news.sign_in = function() {
     $(com.sincerial.news.sign_in_button_id).unbind("click")
+    $(com.sincerial.news.sign_in_cancel_id).unbind("click")
     $(com.sincerial.news.sign_in_form_id).submit(
         function() {
             com.sincerial.news.submit_sign_in();
@@ -60,7 +78,18 @@ com.sincerial.news.sign_in = function() {
             com.sincerial.news.submit_sign_in();
         }
     )
+    $(com.sincerial.news.sign_in_cancel_id).click(
+        function() {
+            $(com.sincerial.news.sign_in_area_id).hide();
+            $("#feed_items").fadeTo("fast", 1);            
+            com.sincerial.news.signed_out();
+        }
+    )
     $(com.sincerial.news.sign_in_area_id).show();
+    $("#feed_items").fadeTo("fast", 0.25);
+}
+
+com.sincerial.news.submit_sign_in_with_enter = function(my_event) {
 }
 
 com.sincerial.news.submit_sign_in = function() {
@@ -71,6 +100,7 @@ com.sincerial.news.submit_sign_in = function() {
             "password": $("#sign_in_password").val()
         },
         function(response) {
+            $("#feed_items").fadeTo("fast", 1);
             $(com.sincerial.news.sign_in_area_id).hide();
             com.sincerial.news.signed_in($("#sign_in_user_id").val());
             com.sincerial.news.request_feed();
@@ -98,6 +128,7 @@ com.sincerial.news.signed_in = function(user_id) {
 com.sincerial.news.signed_out = function() {
     $(com.sincerial.news.sign_out_element_id).hide();
     $(com.sincerial.news.sign_in_element_id).show();
+    $("#signed_in_user_id").html("&nbsp;");
 }
 
 com.sincerial.news.request_feed = function() {
